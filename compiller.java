@@ -44,8 +44,9 @@ public class compiller {
             }
             FileWriter myWriter = new FileWriter(file + "machine.txt");
             for (String s : pc) {
-                if(s==null) break;
-                myWriter.write(s+"\n");
+                if (s == null)
+                    break;
+                myWriter.write(s + "\n");
             }
             myWriter.close();
         } catch (Exception e) {
@@ -68,7 +69,7 @@ public class compiller {
                     array[2] = decToBinary(array[2]);
                     array[3] = decToBinary(array[3]);
                     while (array[3].length() < 16) {
-                        array[3] += "0";
+                        array[3] = "0" + array[3];
                     }
                     break;
 
@@ -78,7 +79,7 @@ public class compiller {
                     array[2] = decToBinary(array[2]);
                     array[3] = decToBinary(array[3]);
                     while (array[3].length() < 16) {
-                        array[3] += "0";
+                        array[3] = "0" + array[3];
                     }
                     break;
 
@@ -88,7 +89,7 @@ public class compiller {
                     array[2] = decToBinary(array[2]);
                     array[3] = decToBinary(array[3]);
                     while (array[3].length() < 16) {
-                        array[3] += "0";
+                        array[3] = "0" + array[3];
                     }
                     break;
 
@@ -98,7 +99,7 @@ public class compiller {
                     array[2] = decToBinary(array[2]);
                     array[3] = decToBinary(array[3]);
                     while (array[3].length() < 16) {
-                        array[3] += "0";
+                        array[3] = "0" + array[3];
                     }
                     break;
 
@@ -108,7 +109,7 @@ public class compiller {
                     array[2] = decToBinary(array[2]);
                     array[3] = decToBinary(array[3]);
                     while (array[3].length() < 16) {
-                        array[3] += "0";
+                        array[3] = "0" + array[3];
                     }
                     break;
 
@@ -118,7 +119,7 @@ public class compiller {
                     array[2] = decToBinary(array[2]);
                     array[3] = decToBinary(array[3]);
                     while (array[3].length() < 16) {
-                        array[3] += "0";
+                        array[3] = "0" + array[3];
                     }
                     break;
 
