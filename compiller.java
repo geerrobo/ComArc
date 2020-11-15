@@ -313,6 +313,11 @@ public class compiller {
         return str;
     }
 
+    /**
+     * Is label = { "add", "nand", "lw", "sw", "beq", "jalr" }
+     * @param str label
+     * @return true is label and false is not label
+     */
     private boolean matchinstruc(String str) {
         for (String s : inst) {
             if (str.matches(s)) {
