@@ -27,6 +27,7 @@ public class compiller {
                 break;
             pc[i] = translate2(pc[i], i);
         }
+        printState();
         for (int i = 0; i < pc.length; i++) {
             if (pc[i] == null)
                 break;
@@ -258,6 +259,12 @@ public class compiller {
         }
     }
 
+    /**
+     * fine index of .fill
+     * @param str label
+     * @param index row of pc
+     * @return index of .fill
+     */
     private int fineIndex(String str, int index) {
         for (int i = 0; i < pc.length; i++) {
             if (pc[i] == null)
@@ -293,15 +300,6 @@ public class compiller {
 
     private boolean matchinstruc(String str) {
         for (String s : inst) {
-            if (str.matches(s)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private boolean matchinstruc2(String str) {
-        for (String s : inst2) {
             if (str.matches(s)) {
                 return true;
             }
