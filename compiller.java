@@ -327,6 +327,9 @@ public class compiller {
         return false;
     }
 
+    /**
+     * print present state
+     */
     private void printState() {
         System.out.println("==================");
         for (String str : pc) {
