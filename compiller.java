@@ -8,6 +8,11 @@ public class compiller {
     String[] pc = new String[50];
     String path;
 
+    /**
+     * main constructor
+     * @param file file directory
+     * @throws Exception error exception
+     */
     public compiller(String file) throws Exception {
         path = file + "assembly.txt";
 
@@ -55,6 +60,12 @@ public class compiller {
         }
     }
 
+    /**
+     * assembly to machine code
+     * @param str line of assembly
+     * @param index number of line
+     * @return machine code
+     */
     private String toBinary(String str, int index) {
         String temp = "";
 
@@ -167,6 +178,11 @@ public class compiller {
         return temp;
     }
 
+    /**
+     * change decimal to binary
+     * @param str decimal
+     * @return binary
+     */
     private String decToBinary(String str) {
         if (Integer.parseInt(str) < 0) {
             String st = Integer.toBinaryString(Integer.parseInt(str));
@@ -177,6 +193,12 @@ public class compiller {
         }
     }
 
+    /**
+     * main function for reading assembly part 2
+     * @param str line of assembly
+     * @param index number of line
+     * @return new line format
+     */
     private String translate2(String str, int index) {
         String[] array = str.split(" ");
 
@@ -194,6 +216,12 @@ public class compiller {
         return str;
     }
 
+    /**
+     * main function for reading assembly part 1
+     * @param str line of assembly
+     * @param index number of line
+     * @return new line format
+     */
     private String translate1(String str, int index) {
         String[] array = str.split(" ");
 
