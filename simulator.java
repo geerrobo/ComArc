@@ -8,6 +8,7 @@ public class simulator {
     String path;
     char[][] mc = new char[32][32];
     String temp[] = new String[32];
+    int reg[] = new int[8];
 
     public simulator(String file) throws Exception {
         path = file;
@@ -70,7 +71,7 @@ public class simulator {
                 for (int j = 15; j >=0; j--) {
                     of += String.valueOf(mc[i][j]);
                 }
-                // System.out.println("of:"+of);
+                System.out.println("of:"+of);
                 LoadW(rs,rt,of);
   
                 break;
@@ -142,6 +143,15 @@ public class simulator {
     }
 
     public void LoadW(String rs1,String rs2,String of){
+        int rs1_dec = Integer.parseInt(rs1,2); 
+        int rs2_dec = Integer.parseInt(rs2,2); 
+        int of_dec = Integer.parseInt(of,2); 
+
+        reg[rs2_dec] = of_dec + reg[rs1_dec];
+
+        System.out.println(reg[rs2_dec]);
+
+
 
     }
 
