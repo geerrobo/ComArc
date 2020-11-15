@@ -241,6 +241,11 @@ public class compiller {
         return str;
     }
 
+    /**
+     * replace label in regA, regB and offset with index
+     * @param str label
+     * @param resultIndex index for replace
+     */
     private void replaceStringIndex(String str, String resultIndex) {
         for (int i = 0; i < pc.length; i++) {
             if (pc[i] == null)
@@ -276,6 +281,11 @@ public class compiller {
         return 0;
     }
 
+    /**
+     * Is integer?
+     * @param str text for check
+     * @return true for integer, false for not integer
+     */
     private boolean isInteger(String str) {
         try {
             Integer.parseInt(str);
@@ -285,6 +295,11 @@ public class compiller {
         }
     }
 
+    /**
+     * fine value of label in regA, regB or offset
+     * @param str label
+     * @return value of str
+     */
     private String findValue(String str) {
         for (int i = 0; i < pc.length; i++) {
             if (pc[i] == null)
