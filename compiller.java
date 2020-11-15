@@ -16,23 +16,47 @@ public class compiller {
 
         for (int i = 0; sc.hasNextLine(); i++) {
             pc[i] = sc.nextLine();
-            // pc[i] = pc[i].substring(0, pc[i].length() - 1);
-            // System.out.println(pc[i]);
         }
         for (int i = 0; i < pc.length; i++) {
             if (pc[i] == null)
                 break;
-            pc[i] = toBinary(pc[i], i);
+            pc[i] = translate1(pc[i], i);
+        }
+        for (int i = 0; i < inst.length; i++) {
+            if (pc[i] == null)
+                break;
+            pc[i] = translate2(pc[i], i);
         }
 
         printState();
     }
 
-    private String toBinary(String str, int index) {
+    private String translate2(String str, int index) {
         String[] array = str.split(" ");
+
+        if (array.length <= 2)
+            return str;
+
+        if (matchinstruc(array[1])) {
+            String temp = "";
+            for (int i = 1; i < array.length; i++) {
+                temp += array[i] + " ";
+            }
+            return temp;
+        }
+
+        return str;
+    }
+
+    private String translate1(String str, int index) {
+        String[] array = str.split(" ");
+
+        if (array.length <= 2)
+            return str;
 
         // normal form
         if (matchinstruc(array[0])) {
+            // System.out.println("matchinstruc");
             for (int i = 1; i < array.length; i++) {
                 if (isInteger(array[i])) {
                     int temp = Integer.parseInt(array[i]);
@@ -41,12 +65,8 @@ public class compiller {
                     for (int j = 0; j < pc.length; j++) {
                         if (pc[j] == null)
                             break;
-                        // System.out.println(i +" "+ j + " " +array[i]);
-                        if (pc[j].matches(array[i] + "(.*)")) {
-                            System.out.println(array[i] + " :: " + pc[j]);
-                            System.out.println(pc[index]);
-                            pc[index] = pc[index].replaceAll(array[i], findValue(array[i]));
-                            System.out.println(pc[index]);
+                        if (pc[j].matches(array[i] + " .fill (.*)")) {
+                            return pc[index].replaceAll(array[i], findValue(array[i]));
                         }
                     }
                 }
@@ -71,32 +91,43 @@ public class compiller {
              * 
              * default: break; }
              */
-        }
+        } else if (array[1].equals(".fill")) { // variable after .fill
+            if (isInteger(array[2])) {
 
-        // variable after .fill
-        for (int i = 0; i < array.length; i++) {
-            if (array[i] == ".fill") {
-                if (isInteger(array[i + 1])) {
+            } else {
+                String resultIndex = Integer.toString(fineIndex(array[2], index));
+                replaceStringIndex(array[2], resultIndex);
+                array[2] = resultIndex;
 
-                } else {
-                    array[i + 1] = Integer.toString(fineIndex(array[i + 1]));
+                str = "";
+                for (String s : array) {
+                    str += s + " ";
                 }
+                return str;
             }
         }
-
-        /*
-         * if (array.length >= 2) { if (matchinstruc(array[1])) {
-         * System.out.println(array[1]); } else { System.out.println("not"); } }
-         */
-
-        String temp = "";
-        /*
-         * for (int i = 0; i < array.length; i++) { temp += array[i] + " "; }
-         */
         return str;
     }
 
-    private int fineIndex(String str) {
+    private void replaceStringIndex(String str, String resultIndex) {
+        for (int i = 0; i < pc.length; i++) {
+            if (pc[i] == null)
+                break;
+            String[] array = pc[i].split(" ");
+            for (int j = 1; j < array.length; j++) {
+                if (array[j].equals(str)) {
+                    int finalIndex = Integer.parseInt(resultIndex) - 1 - i;
+                    array[j] = Integer.toString(finalIndex);
+                    pc[i] = "";
+                    for (String s : array) {
+                        pc[i] += s + " ";
+                    }
+                }
+            }
+        }
+    }
+
+    private int fineIndex(String str, int index) {
         for (int i = 0; i < pc.length; i++) {
             if (pc[i] == null)
                 break;
@@ -120,9 +151,9 @@ public class compiller {
         for (int i = 0; i < pc.length; i++) {
             if (pc[i] == null)
                 break;
-            if (pc[i].matches(str + " .fill(.*)")) {
+            if (pc[i].matches(str + " .fill (.*)")) {
                 String[] array = pc[i].split(" ");
-                System.out.println(str + " = " + array[2]);
+                // System.out.println(str + " = " + array[2]);
                 return array[2];
             }
         }
