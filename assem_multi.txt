@@ -1,9 +1,10 @@
 lw 0 1 x
 lw 0 2 y
 lw 0 3 0 // i
+add 3 3 1 // i++
 add 4 x x // +
-beq 3 2 6
-beq 0 0 2
+beq 3 2 7
+beq 0 0 3
 halt
 
 x * y

@@ -7,7 +7,6 @@ public class compiller {
     String inst2[] = { "halt", "noop", ".fill" };
     String[][] mem = new String[size][32];
     String[] pc = new String[size];
-    String path;
 
     /**
      * main constructor
@@ -15,9 +14,7 @@ public class compiller {
      * @throws Exception error exception
      */
     public compiller(String file) throws Exception {
-        path = file + "assembly.txt";
-
-        File fr = new File(path);
+        File fr = new File(file);
         Scanner sc = new Scanner(fr);
 
         for (int i = 0; sc.hasNextLine(); i++) {
@@ -33,19 +30,20 @@ public class compiller {
                 break;
             pc[i] = translate2(pc[i], i);
         }
+        printState();
         for (int i = 0; i < pc.length; i++) {
             if (pc[i] == null)
                 break;
             pc[i] = toBinary(pc[i], i);
         }
-
+        printState();
         try {
-            File myObj = new File(file + "machine.txt");
+            File myObj = new File("C:\\Users\\geerc\\Documents\\ComArc\\machine.txt");
             if (myObj.createNewFile()) {
                 System.out.println("File created: " + myObj.getName());
             } else {
             }
-            FileWriter myWriter = new FileWriter(file + "machine.txt");
+            FileWriter myWriter = new FileWriter("C:\\Users\\geerc\\Documents\\ComArc\\machine.txt");
             for (String s : pc) {
                 if (s == null)
                     break;
