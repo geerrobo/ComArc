@@ -53,7 +53,7 @@ public class simulator {
 
         String rs,rt,rd;
         String of = "";
-        String check = "";
+        
         
         
         switch (op) {
@@ -79,27 +79,27 @@ public class simulator {
             case "010":
                 rs = String.valueOf(mc[i][21]) + String.valueOf(mc[i][20]) + String.valueOf(mc[i][19]);
                 rt = String.valueOf(mc[i][18]) + String.valueOf(mc[i][17]) + String.valueOf(mc[i][16]);
-                check = String.valueOf(mc[i][15]);
+                
                 
                 for (int j = 14; j >=0; j--) {
                     of += String.valueOf(mc[i][j]);
                 }
 
-                LoadW(rs,rt,of,check);
-  
+                LoadW(rs,rt,of);
+
                 break;
                 
             case "011":
 
                 rs = String.valueOf(mc[i][21]) + String.valueOf(mc[i][20]) + String.valueOf(mc[i][19]);
                 rt = String.valueOf(mc[i][18]) + String.valueOf(mc[i][17]) + String.valueOf(mc[i][16]);
-                check = String.valueOf(mc[i][15]);
+               
 
                 for (int j = 14; j >=0; j--) {
                     of += String.valueOf(mc[i][j]);
                 }
 
-                StoreW(rs,rt,of,check);
+                StoreW(rs,rt,of);
                 
                 break;
 
@@ -163,13 +163,13 @@ public class simulator {
 
     }
 
-    public void LoadW(String rs1,String rs2,String of,String check){
+    public void LoadW(String rs1,String rs2,String of){
         int rs1_dec = Integer.parseInt(rs1,2); 
         int rs2_dec = Integer.parseInt(rs2,2); 
         int of_dec = Integer.parseInt(of,2);
         String mem_temp ="";
         
-        if(check.equals("1") ){
+        if(mc[pc-1][15] == '1' ){
             of_dec = 32766-of_dec ;
         }
 
@@ -191,7 +191,7 @@ public class simulator {
 
     }
 
-    public void StoreW(String rs1,String rs2,String of,String check){
+    public void StoreW(String rs1,String rs2,String of){
         int rs1_dec = Integer.parseInt(rs1,2); 
         int rs2_dec = Integer.parseInt(rs2,2); 
         int of_dec = Integer.parseInt(of,2);
@@ -228,9 +228,10 @@ public class simulator {
     }
 
     public void Halt(){
+        ins = ins+1;
         System.out.println("end state"+ 
         "\n machine halted"+
-        "\n total of "+ ins+1 +" instructions executed"+
+        "\n total of "+ ins +" instructions executed"+
         "\n final state of machine:");
 
         PrintState();
