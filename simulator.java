@@ -10,6 +10,7 @@ public class simulator {
     String mem[] = new String[32];
     int reg[] = new int[8];
     int pc = 0;
+    int ins =0;
 
     public simulator(String file) throws Exception {
         path = file;
@@ -20,13 +21,12 @@ public class simulator {
         
         for (int i = 0; sc.hasNextLine(); i++) {
             mem[i] = sc.nextLine();
-            int bin1 = Integer.parseInt(mem[i]); 
-            String bin2 = Integer.toBinaryString(bin1);
+            
             int k = 0;
 
-            for(int j=bin2.length()-1;j >= 0;j--){
+            for(int j=mem[i].length()-1;j >= 0;j--){
 
-                mc[i][j] = bin2.charAt(k);
+                mc[i][j] = mem[i].charAt(k);
                 k++;
             }
 
@@ -34,25 +34,27 @@ public class simulator {
         PrintState();
 
         pc =1;
+        
 
-        while (pc<3) {
+        while (true) {
             String op = String.valueOf(mc[pc-1][24]) + String.valueOf(mc[pc-1][23]) + String.valueOf(mc[pc-1][22]);
             System.out.println(op);
-            pc = Read(op,pc-1);
-            pc++;
+            Read(op,pc-1);
+            
             PrintState();
+            pc++;
+            ins++;
         }
 
     }
 
 
-    public int Read(String op,int i){
-        // String op = String.valueOf(mc[0][24]) + String.valueOf(mc[0][23]) + String.valueOf(mc[0][22]);
-        // op = "110";
-        // System.out.println(op);
+    public void Read(String op,int i){
+
         String rs,rt,rd;
         String of = "";
-        String check = "";
+        
+        
         
         switch (op) {
             case "000":
@@ -77,27 +79,27 @@ public class simulator {
             case "010":
                 rs = String.valueOf(mc[i][21]) + String.valueOf(mc[i][20]) + String.valueOf(mc[i][19]);
                 rt = String.valueOf(mc[i][18]) + String.valueOf(mc[i][17]) + String.valueOf(mc[i][16]);
-                check = String.valueOf(mc[i][15]);
+                
                 
                 for (int j = 14; j >=0; j--) {
                     of += String.valueOf(mc[i][j]);
                 }
-                // System.out.println("of:"+of);
-                LoadW(rs,rt,of,check);
-  
+
+                LoadW(rs,rt,of);
+
                 break;
                 
             case "011":
 
                 rs = String.valueOf(mc[i][21]) + String.valueOf(mc[i][20]) + String.valueOf(mc[i][19]);
                 rt = String.valueOf(mc[i][18]) + String.valueOf(mc[i][17]) + String.valueOf(mc[i][16]);
-                check = String.valueOf(mc[i][15]);
+               
 
                 for (int j = 14; j >=0; j--) {
                     of += String.valueOf(mc[i][j]);
                 }
-                // System.out.println("of:"+of);
-                StoreW(rs,rt,of,check);
+
+                StoreW(rs,rt,of);
                 
                 break;
 
@@ -105,20 +107,21 @@ public class simulator {
 
                 rs = String.valueOf(mc[i][21]) + String.valueOf(mc[i][20]) + String.valueOf(mc[i][19]);
                 rt = String.valueOf(mc[i][18]) + String.valueOf(mc[i][17]) + String.valueOf(mc[i][16]);
-                check = String.valueOf(mc[i][15]);
+                
 
                 for (int j = 14; j >=0; j--) {
                     of += String.valueOf(mc[i][j]);
                 }
-                // System.out.println("of:"+of);
-                return Beq(rs,rt,of,check);
+
+                Beq(rs,rt,of);
+
+                break;
 
             case "101":
 
                 rs = String.valueOf(mc[i][21]) + String.valueOf(mc[i][20]) + String.valueOf(mc[i][19]);
                 rd = String.valueOf(mc[i][18]) + String.valueOf(mc[i][17]) + String.valueOf(mc[i][16]);
-                
-                // System.out.println("of:"+of);
+
                 Jalr(rs,rd);
                 
                 break;
@@ -132,9 +135,10 @@ public class simulator {
                 break;
             
             default:
+                System.exit(1);             //error exception
                 break;
         }
-        return i+1;
+        
     }
 
 
@@ -145,7 +149,6 @@ public class simulator {
         int rd_dec = Integer.parseInt(rd,2);
 
         reg[rd_dec] = reg[rs1_dec] + reg[rs2_dec];
-        // System.out.println(reg[rd_dec]);
 
     }
 
@@ -160,58 +163,77 @@ public class simulator {
 
     }
 
-    public void LoadW(String rs1,String rs2,String of,String check){
+    public void LoadW(String rs1,String rs2,String of){
         int rs1_dec = Integer.parseInt(rs1,2); 
         int rs2_dec = Integer.parseInt(rs2,2); 
         int of_dec = Integer.parseInt(of,2);
+        String mem_temp ="";
         
-        
-
-        if(check.equals("1")){
-            of_dec = of_dec-32766 ;
+        if(mc[pc-1][15] == '1' ){
+            of_dec = 32766-of_dec ;
         }
 
-        int a = Integer.parseInt(mem[of_dec]);
-        System.out.println(a);
 
-        reg[rs2_dec] = reg[rs1_dec] + a;
+        int a = reg[rs1_dec] + of_dec;
 
-        // System.out.println(reg[rs2_dec]);
+        for (int j = 14; j >=0; j--) {
+            mem_temp += String.valueOf(mc[a][j]);
+        }
+
+        int mem_dec = Integer.parseInt(mem_temp,2);
+
+        if(mc[a][15] == '1'){
+            mem_dec = 32766-mem_dec;
+        } 
+
+        reg[rs2_dec] = mem_dec;
+        
 
     }
 
-    public void StoreW(String rs1,String rs2,String of,String check){
+    public void StoreW(String rs1,String rs2,String of){
+        int rs1_dec = Integer.parseInt(rs1,2); 
+        int rs2_dec = Integer.parseInt(rs2,2); 
+        int of_dec = Integer.parseInt(of,2);
+
+        int x = of_dec+reg[rs1_dec];
+
+        mem[x] = Integer.toBinaryString(reg[rs2_dec]);
+        
 
     }
 
-    public int Beq(String rs1,String rs2,String of,String check){
+    public void Beq(String rs1,String rs2,String of){
         int rs1_dec = Integer.parseInt(rs1,2); 
         int rs2_dec = Integer.parseInt(rs2,2); 
         int of_dec = Integer.parseInt(of, 2);
 
         if(reg[rs1_dec] == reg[rs2_dec]){
             
-            if(check.equals("1")){
-                of_dec = (of_dec-32766) +pc;
+            if(mc[pc-1][15] == '1'){
+                pc = (of_dec-32767)-1 +pc;
             }else{
-                of_dec = of_dec + pc;
+                pc = of_dec + pc;
             }
-        }
-        // System.out.println("++++++++++++"+of_dec);
-        return of_dec;
+        } 
+        
     }
 
-    public int Jalr(String rs,String rd){
+    public void Jalr(String rs,String rd){
         int rs_dec = Integer.parseInt(rs,2); 
         int rd_dec = Integer.parseInt(rd,2); 
         reg[rd_dec] = pc+1;
-
-        return reg[rs_dec];
-
+        pc = rs_dec;
 
     }
 
     public void Halt(){
+        ins = ins+1;
+        System.out.println("end state"+ 
+        "\n machine halted"+
+        "\n total of "+ ins +" instructions executed"+
+        "\n final state of machine:");
+
         PrintState();
         System.exit(0);
     }
@@ -221,11 +243,11 @@ public class simulator {
         System.out.println("pc:"+pc);
         System.out.println("mem:");
         for (int i = 0; mem[i] != null; i++) {
-            System.out.println("\n mem["+ i + "]"+mem[i]);
+            System.out.println("\n mem["+ i + "] = "+mem[i]);
         }
         System.out.println("\n Reg:");
         for (int i = 0; i < reg.length; i++) {
-            System.out.println("\n reg["+ i + "]" + reg[i]);
+            System.out.println("\n reg["+ i + "] = " + reg[i]);
         }
 
     }
