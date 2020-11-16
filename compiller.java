@@ -2,10 +2,11 @@ import java.io.*;
 import java.util.Scanner;
 
 public class compiller {
+    static int size = 50;
     String inst[] = { "add", "nand", "lw", "sw", "beq", "jalr" };
     String inst2[] = { "halt", "noop", ".fill" };
-    int[][] mem = new int[50][];
-    String[] pc = new String[50];
+    String[][] mem = new String[size][32];
+    String[] pc = new String[size];
     String path;
 
     /**
