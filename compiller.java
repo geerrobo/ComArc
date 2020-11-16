@@ -46,7 +46,6 @@ public class compiller {
             if (myObj.createNewFile()) {
                 System.out.println("File created: " + myObj.getName());
             } else {
-                System.out.println("File already exists.");
             }
             FileWriter myWriter = new FileWriter(file + "machine.txt");
             for (String s : pc) {
@@ -71,8 +70,6 @@ public class compiller {
 
         try {
             String[] array = str.split(" ");
-
-            System.out.println(array[0]);
 
             switch (array[0]) {
                 case "add":
@@ -240,7 +237,7 @@ public class compiller {
                         if (pc[j] == null)
                             break;
                         if (pc[j].matches(array[i] + " .fill (.*)")) {
-                            return pc[index].replaceAll(array[i], findValue(array[i]));
+                            return pc[index].replaceAll(array[i], Integer.toString(j));
                         }
                     }
                 }
