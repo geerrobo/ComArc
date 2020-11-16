@@ -33,14 +33,11 @@ public class compiller {
                 break;
             pc[i] = translate2(pc[i], i);
         }
-        printState();
         for (int i = 0; i < pc.length; i++) {
             if (pc[i] == null)
                 break;
             pc[i] = toBinary(pc[i], i);
         }
-
-        printState();
 
         try {
             File myObj = new File(file + "machine.txt");
@@ -127,7 +124,7 @@ public class compiller {
                     array[0] = "101";
                     array[1] = decToBinary(array[1]);
                     array[2] = decToBinary(array[2]);
-                    array[3] = decToBinary(array[3]);
+                    array[3] = "0";
                     while (array[3].length() < 16) {
                         array[3] = "0" + array[3];
                     }
@@ -228,7 +225,6 @@ public class compiller {
 
         // normal form
         if (matchinstruc(array[0])) {
-            // System.out.println("matchinstruc");
             for (int i = 1; i < array.length; i++) {
                 if (isInteger(array[i])) {
                     int temp = Integer.parseInt(array[i]);

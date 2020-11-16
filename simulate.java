@@ -24,6 +24,9 @@ public class simulate {
                 mem[i][j] = getTag(pc[i], j);
             }
         }
+
+        //printResult();
+        printState();
     }
 
     private String getTag(String str, int pos) {
@@ -32,7 +35,7 @@ public class simulate {
             return getOpcode(str);
         } else {
             String opCode = getOpcode(str);
-            if (opCode == "000" || opCode == "001") { // R-type
+            if (opCode.equals("000") || opCode.equals("001")) { // R-type
                 switch (pos) {
                     case 1:
                         return getCode(str, 19, 21);
@@ -46,7 +49,7 @@ public class simulate {
                     default:
                         break;
                 }
-            } else if (opCode == "010" || opCode == "011" || opCode == "100") { // I-type
+            } else if (opCode.equals("010") || opCode.equals("011") || opCode.equals("100")) { // I-type
                 switch (pos) {
                     case 1:
                         return getCode(str, 19, 21);
@@ -60,7 +63,7 @@ public class simulate {
                     default:
                         break;
                 }
-            } else if (opCode == "101") { // J-type
+            } else if (opCode.equals("101")) { // J-type
                 switch (pos) {
                     case 1:
                         return getCode(str, 19, 21);
@@ -82,7 +85,7 @@ public class simulate {
         for (int i = begin; i <= end; i++) {
             temp += str.charAt(i);
         }
-        return temp;
+        return reverseString(temp);
     }
 
     private String getOpcode(String str) {
@@ -90,7 +93,7 @@ public class simulate {
         for (int i = 22; i <= 24; i++) {
             temp += str.charAt(i);
         }
-        return temp;
+        return reverseString(temp);
     }
 
     private String reverseString(String str) {
@@ -107,5 +110,23 @@ public class simulate {
         }
 
         return new String(result);
+    }
+
+    public void printResult(){
+        for (int i = 0; mem[i][0]!=null; i++) {
+            for (int j = 0; j < 4; j++) {
+                System.out.println(j+": "+mem[i][j]);
+            }
+        }
+    }
+
+    public void printState(){
+        for (int i = 0; pc[i]!=null; i++) {
+            if(reverseString(pc[i]).charAt(15)=='1'){
+                System.out.println("minus");
+            }else{
+                System.out.println("memory["+i+"]="+Integer.parseInt(pc[i],2));
+            }
+        }
     }
 }
